@@ -9,13 +9,16 @@ class MessageCreateListener(private val discordBot: DiscordBot) : ListenerAdapte
             return
         }
         event.message.attachments.forEach {
-            it.retrieveInputStream().thenAccept { stream ->
-                val inputReader = InputStreamReader(stream)
-                if (discordBot.supportsExtension(it.fileExtension ?: return@thenAccept)) {
-                    try {
-                        event.message.channel.sendMessage("${event.message.author.asMention}, ${discordBot.paste(inputReader, it.fileName)}").queue()
-                    } catch (e: PasteException) {
-                        logger.error(e.stackTraceToString())
+            it.retrieveInputStream().thenAccept { acceptedStream ->
+                acceptedStream.use { inputStream ->
+                    InputStreamReader(inputStream).use{ reader ->
+                        if (discordBot.supportsExtension(it.fileExtension ?: return@thenAccept)) {
+                            try {
+                                event.message.channel.sendMessage("${event.message.author.asMention}, ${discordBot.paste(reader, it.fileName)}").queue()
+                            } catch (e: PasteException) {
+                                logger.error(e.stackTraceToString())
+                            }
+                        }
                     }
                 }
             }
