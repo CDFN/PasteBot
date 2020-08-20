@@ -7,6 +7,8 @@ import javax.naming.ConfigurationException
 object BotConfiguration : ConfigSpec("") {
     val token by required<String>("token", "Account's Discord token")
     val logLevel by required<String>("logLevel", "Logger's logging level")
+    val supportedExtensions by required<Array<String>>("supportedExtensions", "Extensions which bot should put on paste service. Be carefu")
+    val pastebinToken by required<String>("pastebinToken", "Pastebin's API key")
 }
 
 fun loadConfig(main: DiscordBot): Config {

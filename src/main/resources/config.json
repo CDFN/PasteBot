@@ -1,4 +1,5 @@
 {
   "token": "",
-  "logLevel": "INFO"
+  "logLevel": "INFO",
+  "pastebinToken": ""
 }
