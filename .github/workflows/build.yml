@@ -8,3 +8,11 @@ jobs:
     - uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-14
       with:
         args: build
+  publish-artifacts:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/upload-artifact@v2
+        with:
+          name: pastebot-shaded
+          path: build/libs/*-all.jar
